@@ -59,8 +59,26 @@ function icon(n){
  else if(n===10){ctx.strokeRect(x+3,y+1,14,19);rect(x+9,y+4,2,7);rect(x+10,y+10,5,2)}
  else {ctx.strokeRect(x+2,y+2,16,16);rect(x+6,y+6,8,8)}
 }
+// Continuous right-to-left greeting on the original 84×48 LCD.
+// Heart is drawn as an actual 7×7 bitmap, not an iOS emoji/font glyph.
+const scrollingGreeting='Du er søt ❤️ suss Espen';
+const greetingParts=[{text:'Du er søt ',width:10*6},{heart:true,width:9},{text:' suss Espen',width:11*6}];
+const greetingWidth=greetingParts.reduce((sum,part)=>sum+part.width,0);
+const greetingStarted=performance.now();
+const heartBitmap=['0110110','1111111','1111111','1111111','0111110','0011100','0001000'];
+function drawHeart(x,y){
+ ctx.fillStyle=ink;
+ for(let r=0;r<heartBitmap.length;r++)for(let c=0;c<7;c++)if(heartBitmap[r][c]==='1')ctx.fillRect(x+c,y+r,1,1);
+}
+function drawGreeting(){
+ const offset=Math.floor((performance.now()-greetingStarted)/65)%(W+greetingWidth+18);
+ let x=W-offset;
+ ctx.save();ctx.beginPath();ctx.rect(0,13,W,24);ctx.clip();
+ for(const part of greetingParts){if(part.heart)drawHeart(x,21);else pixelText(part.text,x,21);x+=part.width;}
+ ctx.restore();
+}
 function message(s){toast=s;toastUntil=Date.now()+1600;draw()}
-function draw(){frame();queueMicrotask(presentLCD);if(locked){header();center('Tastelås',17,9);footer('Lås opp');return}if(state==='standby'){header();center(profile==='Generell'?'':profile,18,11);footer('Meny');return}
+function draw(){frame();queueMicrotask(presentLCD);if(locked){header();center('Tastelås',17,9);footer('Lås opp');return}if(state==='standby'){header();drawGreeting();footer('Meny');return}
 if(state==='menu'){icon(menu);center(menus[menu][0],32,7);text(`${menu+1}`,78,10,7,'right');footer('Velg')}
 else if(state==='submenu'){header();lines(menus[menu][1],sub)}
 else if(state==='dial'){header();center(number.slice(-17)+'_',20,10);footer('Ring')}
@@ -143,4 +161,4 @@ function stopSnake(){if(loop)clearInterval(loop);loop=null;snake=null}
 function startSnake(){stopSnake();state='snake';score=0;snake={body:[[10,6],[9,6],[8,6]],dir:[1,0],next:[1,0],food:[5,4],alive:true};loop=setInterval(tick,Math.max(75,210-level*15));draw()}
 function turn(k){if(!snake)return;const d={up:[0,-1],down:[0,1],left:[-1,0],right:[1,0]}[k];if(d&&!(d[0]===-snake.dir[0]&&d[1]===-snake.dir[1]))snake.next=d}
 function tick(){if(!snake||!snake.alive)return;snake.dir=snake.next;const [x,y]=snake.body[0],h=[x+snake.dir[0],y+snake.dir[1]],eat=h[0]===snake.food[0]&&h[1]===snake.food[1];const body=eat?snake.body:snake.body.slice(0,-1);if(h[0]<0||h[0]>=26||h[1]<0||h[1]>=12||body.some(p=>p[0]===h[0]&&p[1]===h[1])){snake.alive=false;clearInterval(loop);loop=null;draw();return}snake.body.unshift(h);if(eat){score+=10;const free=[];for(let i=0;i<26;i++)for(let j=0;j<12;j++)if(!snake.body.some(p=>p[0]===i&&p[1]===j))free.push([i,j]);if(free.length)snake.food=free[Math.floor(Math.random()*free.length)];else{snake.alive=false;clearInterval(loop);loop=null}}else snake.body.pop();draw()}
-profile=load('profile','Generell');soundEnabled=load('keysound',true);ringtone=Number(localStorage.getItem('3310-ring')||0);volume=Number(localStorage.getItem('3310-volume')||3);document.addEventListener('visibilitychange',()=>{if(document.hidden&&state==='snake'&&loop){clearInterval(loop);loop=null}else if(!document.hidden)draw()});setInterval(()=>{if(!document.hidden&&['standby','dial','submenu','menu','list'].includes(state))draw()},900);draw();
+profile=load('profile','Generell');soundEnabled=load('keysound',true);ringtone=Number(localStorage.getItem('3310-ring')||0);volume=Number(localStorage.getItem('3310-volume')||3);document.addEventListener('visibilitychange',()=>{if(document.hidden&&state==='snake'&&loop){clearInterval(loop);loop=null}else if(!document.hidden)draw()});setInterval(()=>{if(!document.hidden&&state==='standby')draw()},65);setInterval(()=>{if(!document.hidden&&['dial','submenu','menu','list'].includes(state))draw()},900);draw();

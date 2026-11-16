@@ -79,3 +79,6 @@ LCD-logikken er fortsatt 84 × 48 historiske piksler, men rendres via en 672 × 
 
 ## Versjon 1.5 – fotografibasert front
 Telefonens synlige front er nå basert direkte på referansebildet brukeren lastet opp, ikke en fri CSS-illustrasjon. Den interaktive LCD-flaten og usynlige tastetrykksoner er lagt oppå fotografiet. Dette gir langt bedre formmessig likhet, men bildet har feilaktige bokstaver/tall på enkelte knapper og er derfor ikke en historisk korrekt gjengivelse av tastaturmerkingen. Tastaturfunksjonen følger standard 3310-logikk. LCD-en har 84 × 48 logiske piksler, tegnet til 672 × 384 uten interpolering. Skjermens plassering og trykksonene må fortsatt testes på fysisk iPhone.
+
+## Versjon 1.6 – rullende hilsen
+På startskjermen ruller teksten «Du er søt ❤️ suss Espen» kontinuerlig fra høyre mot venstre. Hjertet tegnes som et pikselikon på LCD-en. Menyer og tastatur fungerer som før.
