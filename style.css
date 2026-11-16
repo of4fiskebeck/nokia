@@ -1,24 +1,35 @@
-:root{font-family:Arial,Helvetica,sans-serif;background:#11151f;color:#fff}*{box-sizing:border-box}html,body{margin:0;min-height:100%;overscroll-behavior:none}body{min-height:100dvh;display:grid;place-items:center;padding:6px 0;background:radial-gradient(ellipse at 50% 25%,#363b49,#11151f 72%)}button{touch-action:manipulation;-webkit-tap-highlight-color:transparent;user-select:none;cursor:pointer;color:#fff}.phone{position:relative;width:min(96vw,410px,calc((100dvh - 18px)*.53));aspect-ratio:390/740;overflow:hidden;border:2px solid #08132d;border-radius:23% 23% 13% 13% / 12% 12% 8% 8%;background:linear-gradient(95deg,#0b1c3e 0%,#284a81 8%,#34588e 19%,#203c6e 45%,#172e60 76%,#2a497b 93%,#0b1a3b 100%);box-shadow:inset 8px 1px 14px #9cbee02e,inset -9px 0 14px #040b23aa,0 15px 45px #000b}.phone:before{content:"";position:absolute;inset:1.4% 2%;border:1px solid #d5e6ff1a;border-radius:inherit;pointer-events:none}.body-gloss{position:absolute;inset:0;background:linear-gradient(110deg,transparent 20%,#ffffff0a 28%,transparent 39%,transparent 75%,#ffffff09 90%,transparent 96%);pointer-events:none}.earpiece{position:absolute;top:4.5%;left:41%;width:18%;height:1.4%;border-radius:50%;background:#05132c;display:flex;justify-content:center;align-items:center;gap:6%;box-shadow:0 1px 2px #6686b0}.earpiece i{height:50%;width:5%;background:#35517b}.brand{position:absolute;top:12%;width:100%;text-align:center;font-weight:900;letter-spacing:.07em;font-size:clamp(19px,6.8vw,29px);text-shadow:0 2px 3px #071632}.faceplate{position:absolute;inset:20% 5% 3.5%;border-radius:15% 15% 8% 8% / 9% 9% 6% 6%;background:linear-gradient(100deg,#14274d,#2c4b80 14%,#1c376b 52%,#122a57 95%);box-shadow:inset 2px 3px 6px #89a5cc52,inset -3px -4px 10px #06132d,0 -2px 2px #09152b}.display-frame{position:absolute;top:2%;left:7%;width:86%;height:37%;padding:5%;border-radius:22% 22% 25% 25% / 20% 20% 19% 19%;background:linear-gradient(145deg,#8d9ab0,#4e6181 28%,#293e60 68%,#8797b0);box-shadow:inset 0 2px 4px #e2ebf6aa,0 5px 7px #09162e;border:2px solid #223658}.lcd{width:100%;height:100%;overflow:hidden;border:4px solid #5b7055;border-radius:5% 5% 8% 8%;background:#a5b795;box-shadow:inset 0 3px 10px #50644780;display:grid;place-items:center}#lcd{display:block;width:100%;height:100%;image-rendering:pixelated;image-rendering:crisp-edges}.navigation{position:absolute;top:40%;left:5%;width:90%;height:19%}.navigation button,.keypad button{border:1px solid #0a1c3b;background:linear-gradient(155deg,#5474a4,#2b4b7c 38%,#152e5c 83%,#0e244e);box-shadow:inset 2px 2px 3px #b3c6e061,inset -2px -3px 4px #06132c,0 3px 4px #07142b;font-weight:900;text-shadow:0 1px 2px #091a3a}.navigation button{position:absolute}.navi{left:32%;top:25%;width:36%;height:52%;border-radius:44% 44% 46% 46% / 50%;font-size:21px}.navi span{font-size:12px}.scroll{left:41%;width:18%;height:22%;border-radius:45%;font-size:13px}.scroll.up{top:0}.scroll.down{bottom:0}.clear{right:2%;top:30%;width:25%;height:38%;border-radius:35% 50% 42% 45%;transform:rotate(9deg);font-size:17px}.call{left:2%;top:30%;width:25%;height:38%;border-radius:50% 35% 45% 42%;transform:rotate(-9deg);font-size:18px}.keypad{position:absolute;top:59.5%;left:7%;width:86%;height:37%;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(4,1fr);gap:3% 6%}.keypad button{min-height:0;padding:1% 0;border-radius:45% 45% 42% 42% / 35% 35% 48% 48%;font-size:clamp(18px,5.8vw,26px);line-height:1}.keypad small{display:block;font-size:clamp(7px,2.1vw,10px);letter-spacing:.08em;margin-top:3%}.bottom-mark{position:absolute;bottom:1.2%;left:40%;width:20%;height:1%;border-radius:50%;background:#06142d7a}button:active{filter:brightness(1.3);box-shadow:inset 2px 3px 6px #06132d!important}@media(min-width:600px){.keypad button{font-size:25px}.keypad small{font-size:10px}}
-
-/* Faithful 2000-era handset geometry: the display and physical Navi/C/scroll controls
-   remain proportionally placed even on tall iPhone screens. */
-.model-mark{position:absolute;right:13%;top:17%;font-size:clamp(7px,1.9vw,10px);letter-spacing:.12em;color:#a3b9d7;text-shadow:0 1px #08152d}
-.brand{top:11.5%;font-family:Arial,sans-serif;letter-spacing:.12em;font-weight:900}
-.navigation{top:40%;height:19%}
-.navigation .navi{left:35%;top:24%;width:30%;height:46%;border-radius:46% 46% 48% 48%;transform:none}
-.navigation .navi span{font-size:clamp(8px,2.2vw,11px);letter-spacing:.02em}
-.navigation .clear{right:3%;top:32%;width:24%;height:36%;font-size:clamp(16px,4.5vw,22px)}
-.navigation .call{left:3%;top:32%;width:24%;height:36%;font-size:clamp(14px,4vw,19px)}
-.navigation .scroll{left:42%;width:16%;height:20%;font-size:clamp(9px,2.4vw,13px)}
-.navigation .scroll.up{top:0}.navigation .scroll.down{bottom:0}
-.navigation .power{position:absolute;right:1%;top:-22%;width:14%;height:23%;border-radius:45%;font-size:11px;background:linear-gradient(#385b8a,#122950)}
-.lcd{border-radius:4% 4% 8% 8%}
-#lcd{filter:contrast(1.09)}
-@media(max-height:650px){body{padding:0}.phone{width:min(92vw,calc(100dvh * .52))}}
-
-/* v1.0: small-screen physical proportions, less flat styling, accessible focus. */
-.phone{isolation:isolate;filter:saturate(.92)}
-.display-frame{background:linear-gradient(130deg,#8194a9 0%,#4b5f7a 19%,#182c4b 49%,#5d718d 82%,#93a3b4 100%);box-shadow:inset 1px 2px 4px #e7f2ff77,inset -2px -3px 4px #071831,0 4px 8px #06132b}
-.lcd{border-color:#687f63;background:#a6b898;box-shadow:inset 0 2px 8px #485b4980}
-.navigation button:focus-visible,.keypad button:focus-visible{outline:2px solid #d5e5ff;outline-offset:2px}
-@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
+/* v1.3: reconstructed Nokia 3310 (2000) silhouette and controls. */
+:root{font-family:Arial,Helvetica,sans-serif;background:#10141c;color:#fff}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;overscroll-behavior:none}
+body{min-height:100dvh;display:grid;place-items:center;padding:10px 0;background:radial-gradient(ellipse at 50% 40%,#333b49,#10141c 75%)}
+button{touch-action:manipulation;-webkit-tap-highlight-color:transparent;user-select:none;cursor:pointer}
+.phone{position:relative;isolation:isolate;width:min(91vw,350px,calc((100dvh - 26px)*.48));aspect-ratio:235/500;overflow:hidden;border:2px solid #071325;border-radius:24% 24% 16% 16% / 10% 10% 6% 6%;background:linear-gradient(95deg,#09172c 0%,#203a5e 8%,#263e65 21%,#1d3154 48%,#152844 82%,#304a6b 94%,#0b1a30 100%);box-shadow:inset 5px 0 8px #99b5d144,inset -6px 0 9px #020b19aa,0 16px 38px #000b}
+.phone:before{content:"";position:absolute;inset:1% 2%;border:1px solid #91a9c42e;border-radius:inherit;pointer-events:none;z-index:6}
+.body-gloss{position:absolute;inset:0;background:linear-gradient(112deg,transparent 10%,#fff1 15%,transparent 28%,transparent 78%,#fff1 91%,transparent 96%);pointer-events:none}
+.silver-rail{position:absolute;left:7%;right:7%;top:1.7%;height:61%;border-radius:43% 43% 31% 31% / 14% 14% 23% 23%;background:linear-gradient(90deg,#718092,#d0d6da 5%,#84929e 9%,transparent 14%,transparent 86%,#7f8b99 92%,#d1d7d9 96%,#677686);clip-path:polygon(0 0,100% 0,100% 82%,88% 100%,12% 100%,0 82%);opacity:.95}
+.earpiece{position:absolute;top:5%;left:47%;width:6%;height:8%;display:flex;flex-direction:column;justify-content:space-between;align-items:center;background:transparent;box-shadow:none;gap:0}
+.earpiece i{display:block;width:30%;height:10%;border-radius:2px;background:#071527;box-shadow:1px 0 #72839a}
+.brand{position:absolute;top:14.5%;left:0;width:100%;font-size:clamp(13px,4.1vw,18px);font-weight:900;letter-spacing:-.035em;text-align:center;text-shadow:0 1px #101927;z-index:2}
+.model-mark{display:none}
+.faceplate{position:absolute;inset:20% 10% 4%;background:transparent;border-radius:0;box-shadow:none}
+.display-frame{position:absolute;top:0;left:0;width:100%;height:35%;padding:3%;border:0;border-radius:9% 9% 22% 22% / 9% 9% 16% 16%;background:linear-gradient(110deg,#10213a,#1c3150 25%,#101f37 76%,#30415b);box-shadow:inset 0 2px 3px #050d19,0 1px 2px #98a4ac66}
+.lcd{width:100%;height:100%;padding:0;overflow:hidden;border:2px solid #394c40;border-radius:3% 3% 7% 7%;background:#a5b795;box-shadow:inset 0 2px 3px #46584255;display:grid;place-items:center}
+#lcd{display:block;width:100%;height:100%;image-rendering:pixelated;image-rendering:crisp-edges;filter:none}
+.navigation{position:absolute;top:35%;left:-1%;width:102%;height:17%;background:linear-gradient(160deg,#e2e4e3,#aab4bf 44%,#8292a4 75%,#c1cad0);border-radius:8% 8% 48% 48% / 10% 10% 48% 48%;box-shadow:inset 0 2px 2px #fff8,0 3px 2px #071325;overflow:visible}
+.navigation button{position:absolute;color:#102334;border:1px solid #4c5b69;background:linear-gradient(150deg,#dbe0e2,#a8b4be 62%,#7d90a3);box-shadow:inset 1px 2px 2px #fff9,inset -1px -2px 2px #4a6074,0 1px 2px #071525;font-weight:700;text-shadow:none}
+.navigation .navi{left:28%;top:2%;width:44%;height:35%;border-radius:8% 8% 45% 45% / 18% 18% 65% 65%;background:linear-gradient(#e5e9e8,#b8c6ce);transform:none}
+.navigation .navi:after{content:"";position:absolute;left:34%;right:34%;top:42%;height:20%;border-radius:20px;background:#55b8c6}
+.navigation .navi span{font-size:0}
+.navigation .clear{left:3%;right:auto;top:34%;width:29%;height:46%;border-radius:17% 20% 42% 27%;transform:rotate(17deg);font-size:clamp(11px,3vw,16px)}
+.navigation .scroll{left:auto;right:3%;width:29%;height:25%;font-size:clamp(11px,3vw,15px);border-radius:20% 20% 25% 25%}
+.navigation .scroll.up{top:30%;transform:rotate(-12deg)}
+.navigation .scroll.down{top:56%;bottom:auto;transform:rotate(-12deg)}
+.navigation .power{right:-8%;top:-245%;width:12%;height:14%;border-radius:40%;font-size:9px;opacity:.8}
+.keypad{position:absolute;top:55%;left:0;width:100%;height:42%;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(4,1fr);gap:7% 11%}
+.keypad button{min-height:0;padding:0;color:#182535;background:linear-gradient(145deg,#f4f6f2,#c9d0d0 45%,#96a8b7);border:1px solid #566a79;border-radius:50% / 44%;box-shadow:inset 1px 2px 2px #fff,inset -1px -2px 2px #687b88,0 2px 2px #08182b;font-weight:800;font-size:clamp(12px,3.7vw,17px);line-height:1}
+.keypad small{display:inline;font-size:clamp(5px,1.6vw,8px);font-weight:600;letter-spacing:0;margin-left:2px}
+.bottom-mark{position:absolute;bottom:1.3%;left:45%;width:10%;height:.6%;border-radius:50%;background:#0a1930aa}
+button:active{filter:brightness(1.14);transform:translateY(1px)}
+.navigation button:focus-visible,.keypad button:focus-visible{outline:2px solid #fff;outline-offset:2px}
+@media(max-height:650px){body{padding:0}.phone{width:min(85vw,calc(100dvh * .46))}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}

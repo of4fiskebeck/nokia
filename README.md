@@ -50,3 +50,24 @@ Begrensninger: En PWA kan ikke lese iPhone-SMS, motta samtaler inne i appen elle
 ### Viktige begrensninger
 
 Dette er fortsatt en simulator og **ikke en dokumentert piksel-for-piksel kopi** av en fysisk Nokia 3310. Ringetonene er syntetiserte tilnærminger, og flere menyvalg er demonstrasjoner eller mangler implementasjon. Safari tillater ikke at en webapp leser iPhones SMS-innboks, tar imot mobilanrop eller erstatter låseskjermen. `tel:` og `sms:` åpner systemfunksjoner og krever brukerens videre handling. Automatisk GitHub Actions-kontroll tester kode, ikke fysisk iPhone eller historisk autentisitet.
+
+## Versjon 1.1: bitmap-LCD
+- LCD-tekst rendres med en fast 5×7 pikselfont på 84×48-rutenettet. Dette reduserer forskjeller mellom Safari og andre nettlesere.
+- Norske tegn Æ, Ø og Å er inkludert.
+- Menytekster tegnes som inverterte bitmap-piksler med horisontal rulling ved lange navn.
+- Grunnleggende syntaks- og regresjonstester kan kjøres med `node --check app.js && node tests/smoke.cjs`.
+
+**Begrensninger:** Dette er en egen rekonstruert pikselfont, ikke dokumentert identisk med Nokias originale font. Webappen kan ikke lese innkommende SMS, overta telefonens ringeskjerm eller blokkere iOS-funksjoner. Test på fysisk iPhone og visuell referansekontroll gjenstår.
+
+
+## Versjon 1.2 – enhetlig LCD-rendering
+
+All skjermtekst gjengis nå med bitmap-rutiner på 84 × 48-rutenettet.
+Menymarkeringen bruker samme font som øvrige skjermbilder, og ikonene
+er tegnet som monokrome primitiver i stedet for operativsystemets emoji.
+Dette er en teknisk konsistensforbedring, ikke en verifisert kopi av
+Nokias originale ikonsett eller skjermfont.
+
+
+## v1.3 – originalmodell 2000
+Visuell rekonstruksjon av klassisk marineblå Nokia 3310 med sølvgrå front, mindre skjerm, sølvfargede ovale taster, vertikale høyttalerspor og C-knapp til venstre. Den ekstra ringeknappen er fjernet. LCD beholdes på 84×48 og gjengis uten CSS-filter eller bilineær utjevning. Dette er fortsatt en CSS-rekonstruksjon og ikke en eksakt industriell 3D-modell.

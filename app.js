@@ -1,6 +1,12 @@
 'use strict';
 const canvas=document.getElementById('lcd'),ctx=canvas.getContext('2d');ctx.imageSmoothingEnabled=false;
 const W=84,H=48,ink='#263b2b',paper='#a5b795';
+// Fixed 5x7 bitmap glyphs avoid iOS font rendering differences on the LCD.
+const glyphs={
+'A':['01110','10001','10001','11111','10001','10001','10001'],'B':['11110','10001','10001','11110','10001','10001','11110'],'C':['01111','10000','10000','10000','10000','10000','01111'],'D':['11110','10001','10001','10001','10001','10001','11110'],'E':['11111','10000','10000','11110','10000','10000','11111'],'F':['11111','10000','10000','11110','10000','10000','10000'],'G':['01111','10000','10000','10111','10001','10001','01111'],'H':['10001','10001','10001','11111','10001','10001','10001'],'I':['11111','00100','00100','00100','00100','00100','11111'],'J':['00111','00010','00010','00010','10010','10010','01100'],'K':['10001','10010','10100','11000','10100','10010','10001'],'L':['10000','10000','10000','10000','10000','10000','11111'],'M':['10001','11011','10101','10101','10001','10001','10001'],'N':['10001','11001','10101','10011','10001','10001','10001'],'O':['01110','10001','10001','10001','10001','10001','01110'],'P':['11110','10001','10001','11110','10000','10000','10000'],'Q':['01110','10001','10001','10001','10101','10010','01101'],'R':['11110','10001','10001','11110','10100','10010','10001'],'S':['01111','10000','10000','01110','00001','00001','11110'],'T':['11111','00100','00100','00100','00100','00100','00100'],'U':['10001','10001','10001','10001','10001','10001','01110'],'V':['10001','10001','10001','10001','10001','01010','00100'],'W':['10001','10001','10001','10101','10101','10101','01010'],'X':['10001','10001','01010','00100','01010','10001','10001'],'Y':['10001','10001','01010','00100','00100','00100','00100'],'Z':['11111','00001','00010','00100','01000','10000','11111'],
+'0':['01110','10011','10101','10101','11001','10001','01110'],'1':['00100','01100','00100','00100','00100','00100','01110'],'2':['01110','10001','00001','00010','00100','01000','11111'],'3':['11110','00001','00001','01110','00001','00001','11110'],'4':['00010','00110','01010','10010','11111','00010','00010'],'5':['11111','10000','10000','11110','00001','00001','11110'],'6':['01111','10000','10000','11110','10001','10001','01110'],'7':['11111','00001','00010','00100','01000','01000','01000'],'8':['01110','10001','10001','01110','10001','10001','01110'],'9':['01110','10001','10001','01111','00001','00001','11110'],
+' ':['00000','00000','00000','00000','00000','00000','00000'],'.':['00000','00000','00000','00000','00000','01100','01100'],':':['00000','01100','01100','00000','01100','01100','00000'],'-':['00000','00000','00000','11111','00000','00000','00000'],'_':['00000','00000','00000','00000','00000','00000','11111'],'/':['00001','00001','00010','00100','01000','10000','10000'],'+':['00000','00100','00100','11111','00100','00100','00000'],'!':['00100','00100','00100','00100','00100','00000','00100'],'?':['01110','10001','00001','00010','00100','00000','00100'],'Æ':['01111','10100','10100','11111','10100','10100','10111'],'Ø':['01111','10011','10101','10101','11001','10001','11110'],'Å':['00100','00000','01110','10001','11111','10001','10001']};
+function pixelText(s,x,y,align='left',inverse=false){const chars=Array.from(String(s).toUpperCase());const width=chars.length*6-1;let xx=align==='center'?Math.round(x-width/2):align==='right'?x-width:x;const old=ctx.fillStyle;ctx.fillStyle=inverse?paper:ink;for(const ch of chars){const g=glyphs[ch]||glyphs['?'];for(let row=0;row<7;row++)for(let col=0;col<5;col++)if(g[row][col]==='1')ctx.fillRect(xx+col,y+row,1,1);xx+=6}ctx.fillStyle=old}
 // Every LCD drawing is made on the original 84 x 48 pixel grid.
 ctx.imageSmoothingEnabled=false;
 const menus=[['Telefonbok',['Søk','Legg til navn','Slett','Rediger','Tildel tone','Send visittkort','Valg','Hurtigvalg','Talenummer','Tjenestenumre']],['Meldinger',['Skriv melding','Innboks','Utboks','Bildemeldinger','Maler','Smilefjes','Meldingsvalg','Infoservice','Talepostnummer']],['Chat',['Start chat']],['Anropslogg',['Ubesvarte anrop','Mottatte anrop','Oppringte numre','Slett anropslister','Samtalevarighet']],['Toner',['Ringetone','Ringevolum','Anropsvarsling','Tastetoner','Varseltone','Vibrering','Komponist']],['Innstillinger',['Telefoninnstillinger','Språk','Velkomstmelding']],['Viderekobling',['Informasjon']],['Spill',['Snake II','Space Impact','Pairs II','Bantumi']],['Kalkulator',[]],['Huskelapper',['Legg til','Vis']],['Klokke',['Alarm','Klokkeinnstillinger','Stoppeklokke','Nedtelling']],['Profiler',['Generell','Lydløs','Møte','Utendørs']],['SIM-tjenester',['Ikke tilgjengelig']]];
@@ -11,7 +17,11 @@ contacts=load('contacts',[]);outbox=load('outbox',[]);notes=load('notes',[]);
 if(!Array.isArray(contacts))contacts=[];if(!Array.isArray(outbox))outbox=[];if(!Array.isArray(notes))notes=[];
 function save(k,v){try{localStorage.setItem('3310-'+k,JSON.stringify(v))}catch{message('Lagring mislyktes')}}
 function rect(x,y,w,h,c=ink){ctx.fillStyle=c;ctx.fillRect(x,y,w,h)}
-function text(s,x,y,size=8,align='left',bold=true){ctx.fillStyle=ink;ctx.font=`${bold?'bold ':''}${size}px monospace`;ctx.textAlign=align;ctx.textBaseline='top';ctx.fillText(String(s),x,y)}
+// Render every label through the same bitmap font; never depend on iOS fonts.
+function text(s,x,y,size=8,align='left',bold=true){
+ const str=String(s);const max=Math.max(0,Math.floor((W-2)/6));
+ pixelText(str.length>max?str.slice(0,max):str,x,y,align);
+}
 function center(s,y,size=8){text(s,42,y,size,'center')}
 function frame(){rect(0,0,W,H,paper);ctx.strokeStyle=ink;ctx.lineWidth=1}
 function header(){const d=new Date();
@@ -22,19 +32,29 @@ function header(){const d=new Date();
 }
 function footer(label='Velg'){rect(0,38,84,1);center(label,40,7)}
 function lines(items,index,label='Velg'){
- const item=items[index]||'(Tom)';
- // Original-style single selected row with a compact scrollbar.
- rect(1,13,74,18,ink);ctx.fillStyle=paper;
- ctx.font='bold 8px monospace';ctx.textAlign='center';ctx.textBaseline='top';
- const max=14;const start=item.length>max?Math.floor(Date.now()/1100)%(item.length-max+2):0;
- ctx.fillText(item.length>max?item.slice(start,start+max):item,38,18);
+ const item=String(items[index]||'(Tom)');
+ rect(1,13,74,18,ink);
+ // 12 bitmap glyphs fit within the 74-pixel highlight.
+ const max=12;const start=item.length>max?Math.floor(Date.now()/1100)%(item.length-max+2):0;
+ pixelText(item.length>max?item.slice(start,start+max):item,38,18,'center',true);
  rect(79,12,1,23);const count=Math.max(1,items.length);
  rect(77,12+Math.floor(index*20/count),5,Math.max(3,Math.ceil(20/count)));
  footer(label);
 }
-function icon(n){const p=(x,y)=>rect(x,y,3,3);ctx.strokeRect(30,10,24,21);if(n===0){ctx.strokeRect(35,13,14,15);rect(38,15,8,1);rect(38,19,8,1);rect(38,23,6,1)}else if(n===1){ctx.strokeRect(33,14,18,12);ctx.beginPath();ctx.moveTo(33,14);ctx.lineTo(42,21);ctx.lineTo(51,14);ctx.stroke()}else if(n===7){for(let i=0;i<3;i++)p(34+i*5,16);p(43,22);p(38,22)}else if(n===4){ctx.beginPath();ctx.arc(42,20,6,0,Math.PI*2);ctx.stroke()}else{center(['☎','✉','≋','↗','♫','⚙','↪','▦','+','!','◷','♬'][n]||'■',16,13)}}
+// Simple hand-drawn monochrome pictograms; no platform-dependent emoji.
+function icon(n){
+ const x=32,y=11;
+ ctx.strokeStyle=ink;ctx.lineWidth=1;
+ if(n===0){ctx.strokeRect(x+3,y+1,14,19);rect(x+6,y+4,8,2);rect(x+6,y+9,8,1);rect(x+6,y+13,8,1)}
+ else if(n===1){ctx.strokeRect(x,y+4,20,13);ctx.beginPath();ctx.moveTo(x,y+4);ctx.lineTo(x+10,y+12);ctx.lineTo(x+20,y+4);ctx.stroke()}
+ else if(n===7){ctx.strokeRect(x+2,y+2,16,16);for(let i=0;i<3;i++)rect(x+5+i*4,y+5,2,2);rect(x+9,y+11,3,3)}
+ else if(n===4){ctx.beginPath();ctx.arc(x+10,y+10,8,0,Math.PI*2);ctx.stroke();rect(x+8,y+5,4,10)}
+ else if(n===8){rect(x+8,y+2,4,16);rect(x+2,y+8,16,4)}
+ else if(n===10){ctx.strokeRect(x+3,y+1,14,19);rect(x+9,y+4,2,7);rect(x+10,y+10,5,2)}
+ else {ctx.strokeRect(x+2,y+2,16,16);rect(x+6,y+6,8,8)}
+}
 function message(s){toast=s;toastUntil=Date.now()+1600;draw()}
-function draw(){frame();if(locked){header();center('Tastelås',17,9);footer('Lås opp');return}if(state==='standby'){header();center(profile==='Generell'?welcome:profile,18,11);footer('Meny');return}
+function draw(){frame();if(locked){header();center('Tastelås',17,9);footer('Lås opp');return}if(state==='standby'){header();center(profile==='Generell'?'':profile,18,11);footer('Meny');return}
 if(state==='menu'){icon(menu);center(menus[menu][0],32,7);text(`${menu+1}`,78,10,7,'right');footer('Velg')}
 else if(state==='submenu'){header();lines(menus[menu][1],sub)}
 else if(state==='dial'){header();center(number.slice(-17)+'_',20,10);footer('Ring')}
@@ -48,7 +68,7 @@ else if(state==='profiles'){header();lines(menus[11][1],sub)}
 else if(state==='tones'){header();lines(toneNames,sub,'Spill')}
 else if(state==='settingslist'){header();lines(settingsPages[settingsPage]||[],settingsCursor)}
 else if(state==='contactactions'){header();lines(['Ring','Send SMS','Rediger','Slett'],sub)}
-else if(state==='volume'){header();center('Ringevolum',10,8);center('▮'.repeat(volume)+'▯'.repeat(5-volume),23,8);footer('OK')}
+else if(state==='volume'){header();center('Ringevolum',10,8);center('I'.repeat(volume)+'-'.repeat(5-volume),23,8);footer('OK')}
 else if(state==='poweroff'){center('NOKIA',17,13)}else if(state==='info'){header();center('Kun i iOS',15,8);center('Trykk C',26,7);footer('Tilbake')}
 if(Date.now()<toastUntil){rect(4,13,76,22,paper);ctx.strokeRect(4,13,76,22);center(toast.slice(0,18),20,8)}}
 let listType='',detail='',pendingName='',caps=true,soundEnabled=true,ringtone=0,volume=3,settingsPage='',settingsCursor=0,selectedContact=-1;
