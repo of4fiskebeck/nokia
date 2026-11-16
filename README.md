@@ -1,19 +1,52 @@
-# Nokia 3310 Retro
+# Nokia 3310 – webrekonstruksjon
 
-Mobiltilpasset retro-webapp med Nokia-inspirert grensesnitt, knapper, flertrykks tekstinntasting, telefonnummer og spillbar Snake II.
+Mobiltilpasset, monokrom Nokia-inspirert simulator for iPhone og andre telefoner. Kjøres helt lokalt i nettleseren uten server eller innlogging.
 
 ## Funksjoner
-- Meny og tastatur, inkludert fysisk tastatur på datamaskin
-- Snake II-inspirert spill med poeng, kollisjon og omstart
-- Skriv SMS med flertrykksknapper, og åpne iOS SMS-komponist med mottaker og tekst
-- Ring med `tel:`-lenke
-- Lokal telefonbok (kun på denne enheten/nettleseren)
+- 84 × 48 pikslers LCD-canvas med oppskalert, skarp pikselgrafikk
+- Navi-meny, C-knapp, opp/ned, tastatur og flertrykks tekstinntasting
+- Snake II-inspirert spill med 2/4/6/8
+- Lokale kontakter, huskelapper og utboks lagret på enheten
+- `tel:` for å åpne iPhones ringefunksjon og `sms:` for å åpne Apples SMS-komponering
+- Enkel lydsimulering via Web Audio
 
 ## Viktige iOS-begrensninger
-Webappen kan ikke lese innkommende SMS, håndtere innkommende telefonsamtaler eller erstatte iOS-låseskjerm/hjemskjerm. SMS-lenken åpner iOS Meldinger og må bekreftes der. Ringelenken åpner telefonappen. Original Nokia-ringetone er ikke inkludert.
+Webapper kan ikke motta eller lese iPhones SMS, overta innkommende samtaler, erstatte iOS-telefonappen, tvinge systemets ringelyd eller fjerne iOS-funksjoner. En SMS åpnes i Apples meldingsapp og må bekreftes av brukeren. Utboks her er bare en lokal kladdhistorikk, **ikke** bekreftelse på sendt melding. Kontakter i simulatoren er ikke synkronisert med iOS-kontakter.
 
-## GitHub Pages
-Push til `main`, gå til **Settings → Pages → Build and deployment → Source: GitHub Actions**. Arbeidsflyten publiserer nettstedet. På iPhone: åpne nettsiden i Safari og velg **Del → Legg til på Hjem-skjerm**.
+## Publisering
+Legg `index.html`, `style.css`, `app.js`, `manifest.webmanifest` og `.github/workflows/pages.yml` i repoets rot og velg **Settings → Pages → GitHub Actions**. Åpne publisert side i Safari og bruk **Del → Legg til på Hjem-skjerm**.
 
-## Lokal test
-Åpne `index.html` i nettleser eller kjør `python3 -m http.server 8000` i prosjektmappen.
+## Status
+Dette er en rekonstruksjon under utvikling, ikke en pikselperfekt kopi av original firmware. Flere menyvalg er demonstrasjoner eller utilgjengelige. Ringetoner er syntetiserte og ikke originalopptak.
+
+## Versjon 0.8 – meny og iPhone-overlevering
+
+- Kontaktliste med handlingene Ring, Send SMS, Rediger og Slett.
+- Telefoninnstillinger med lagret velkomstmelding og valg for automatisk tastelås (innstillingen lagres, men automatisk tidsutløst låsing er ikke implementert).
+- Valg for anropsvarsling og vibrering lagres lokalt. Webappen kan ikke overta iOS' faktiske ringe- eller vibrasjonsinnstillinger.
+- Profil og tastelydvalg lagres lokalt.
+- Innboks og anropslogg kan ikke leses fra iOS av en vanlig webapp.
+- Testene er automatiske røyk-/syntakstester, ikke en historisk eller fysisk iPhone-verifikasjon.
+
+
+## Versjon 0.9
+- Lange menytekster ruller på 84 × 48 LCD.
+- SMS-komponering lagrer en lokal kladd før iOS Meldinger åpnes. Dette er **ikke** bekreftelse på sending.
+- Snake II pauses når webappen legges i bakgrunnen, og kan startes på nytt etter tap.
+- Valgfri kort vibrasjon ved tastetrykk på enheter som støtter Vibration API (iOS Safari støtter normalt ikke dette).
+- Hyppigere LCD-oppdatering for klokke og menyrulling.
+
+Begrensninger: En PWA kan ikke lese iPhone-SMS, motta samtaler inne i appen eller overstyre systemringetonen. Designet er en rekonstruksjon, ikke en dokumentert pikselperfekt kopi av Nokia 3310.
+
+## Versjon 1.0, rekonstruksjonsarbeid
+
+- LCD-statusindikatorene er nå tegnet som piksler, i stedet for å være avhengige av Unicode-symboler som varierer mellom iPhone-versjoner.
+- Menyvalg har tydelig invertert markering og scrollbar innenfor 84 × 48 piksler.
+- Hold `0` inne i nummerfeltet for å skrive `+` til internasjonale numre.
+- Kontakt-, notat- og kladdelagring håndterer nå også ugyldige lagrede datastrukturer.
+- Forbedret skjermrammens materialeffekt, tastaturfokus og tilgjengelighet.
+- Tester er utvidet med kontroller for disse egenskapene.
+
+### Viktige begrensninger
+
+Dette er fortsatt en simulator og **ikke en dokumentert piksel-for-piksel kopi** av en fysisk Nokia 3310. Ringetonene er syntetiserte tilnærminger, og flere menyvalg er demonstrasjoner eller mangler implementasjon. Safari tillater ikke at en webapp leser iPhones SMS-innboks, tar imot mobilanrop eller erstatter låseskjermen. `tel:` og `sms:` åpner systemfunksjoner og krever brukerens videre handling. Automatisk GitHub Actions-kontroll tester kode, ikke fysisk iPhone eller historisk autentisitet.
