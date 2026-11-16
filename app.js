@@ -1,6 +1,12 @@
 'use strict';
-const canvas=document.getElementById('lcd'),ctx=canvas.getContext('2d');ctx.imageSmoothingEnabled=false;
-const W=84,H=48,ink='#263b2b',paper='#a5b795';
+const canvas=document.getElementById('lcd');
+// Draw the authentic 84×48 LCD into a separate pixel buffer, then enlarge
+// it to a high-density 672×384 canvas using exact integer nearest-neighbour pixels.
+const lcdBuffer=document.createElement('canvas');lcdBuffer.width=84;lcdBuffer.height=48;
+const ctx=lcdBuffer.getContext('2d',{alpha:false});ctx.imageSmoothingEnabled=false;
+const output=canvas.getContext('2d',{alpha:false});output.imageSmoothingEnabled=false;
+function presentLCD(){output.imageSmoothingEnabled=false;output.clearRect(0,0,canvas.width,canvas.height);output.drawImage(lcdBuffer,0,0,canvas.width,canvas.height)}
+const W=84,H=48,ink='#263d30',paper='#879f89';
 // Fixed 5x7 bitmap glyphs avoid iOS font rendering differences on the LCD.
 const glyphs={
 'A':['01110','10001','10001','11111','10001','10001','10001'],'B':['11110','10001','10001','11110','10001','10001','11110'],'C':['01111','10000','10000','10000','10000','10000','01111'],'D':['11110','10001','10001','10001','10001','10001','11110'],'E':['11111','10000','10000','11110','10000','10000','11111'],'F':['11111','10000','10000','11110','10000','10000','10000'],'G':['01111','10000','10000','10111','10001','10001','01111'],'H':['10001','10001','10001','11111','10001','10001','10001'],'I':['11111','00100','00100','00100','00100','00100','11111'],'J':['00111','00010','00010','00010','10010','10010','01100'],'K':['10001','10010','10100','11000','10100','10010','10001'],'L':['10000','10000','10000','10000','10000','10000','11111'],'M':['10001','11011','10101','10101','10001','10001','10001'],'N':['10001','11001','10101','10011','10001','10001','10001'],'O':['01110','10001','10001','10001','10001','10001','01110'],'P':['11110','10001','10001','11110','10000','10000','10000'],'Q':['01110','10001','10001','10001','10101','10010','01101'],'R':['11110','10001','10001','11110','10100','10010','10001'],'S':['01111','10000','10000','01110','00001','00001','11110'],'T':['11111','00100','00100','00100','00100','00100','00100'],'U':['10001','10001','10001','10001','10001','10001','01110'],'V':['10001','10001','10001','10001','10001','01010','00100'],'W':['10001','10001','10001','10101','10101','10101','01010'],'X':['10001','10001','01010','00100','01010','10001','10001'],'Y':['10001','10001','01010','00100','00100','00100','00100'],'Z':['11111','00001','00010','00100','01000','10000','11111'],
@@ -54,7 +60,7 @@ function icon(n){
  else {ctx.strokeRect(x+2,y+2,16,16);rect(x+6,y+6,8,8)}
 }
 function message(s){toast=s;toastUntil=Date.now()+1600;draw()}
-function draw(){frame();if(locked){header();center('Tastelås',17,9);footer('Lås opp');return}if(state==='standby'){header();center(profile==='Generell'?'':profile,18,11);footer('Meny');return}
+function draw(){frame();queueMicrotask(presentLCD);if(locked){header();center('Tastelås',17,9);footer('Lås opp');return}if(state==='standby'){header();center(profile==='Generell'?'':profile,18,11);footer('Meny');return}
 if(state==='menu'){icon(menu);center(menus[menu][0],32,7);text(`${menu+1}`,78,10,7,'right');footer('Velg')}
 else if(state==='submenu'){header();lines(menus[menu][1],sub)}
 else if(state==='dial'){header();center(number.slice(-17)+'_',20,10);footer('Ring')}
@@ -118,7 +124,7 @@ function openDialer(n){const clean=n.replace(/[^0-9+*#]/g,'');if(!clean)return;w
 function openSMS(n,body){const clean=n.replace(/[^0-9+]/g,'');if(!clean)return;const sep=/iPhone|iPad|iPod/.test(navigator.userAgent)?'&':'?';window.location.href='sms:'+clean+sep+'body='+encodeURIComponent(body)}
 function showIOSInboxInfo(){message('Innboks kun i iOS')}
 function showIOSCallInfo(){message('Anrop i iOS')}
-const keylabels=[['1',''],['2','ABC'],['3','DEF'],['4','GHI'],['5','JKL'],['6','MNO'],['7','PQRS'],['8','TUV'],['9','WXYZ'],['*',''],['0','+'],['#','']];document.getElementById('keypad').innerHTML=keylabels.map(([n,l])=>`<button data-key="${n}" aria-label="${n} ${l}">${n}<small>${l||' '}</small></button>`).join('');
+const keylabels=[['1',''],['2','ABC'],['3','DEF'],['4','GHI'],['5','JKL'],['6','MNO'],['7','PQRS'],['8','TUV'],['9','WXYZ'],['*',''],['0','+'],['#','']];document.getElementById('keypad').innerHTML=keylabels.map(([n,l])=>`<button data-key="${n}" aria-label="${n} ${l}"></button>`).join('');
 let audio;function beep(f=640,t=.035){try{audio=audio||new(window.AudioContext||window.webkitAudioContext)();const o=audio.createOscillator(),g=audio.createGain();o.type='square';o.frequency.value=f;g.gain.value=.018;o.connect(g);g.connect(audio.destination);o.start();o.stop(audio.currentTime+t)}catch{}}
 let longPressTimer=null,longPressHandled=false;
 const keypadElement=document.getElementById('keypad');

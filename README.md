@@ -71,3 +71,11 @@ Nokias originale ikonsett eller skjermfont.
 
 ## v1.3 – originalmodell 2000
 Visuell rekonstruksjon av klassisk marineblå Nokia 3310 med sølvgrå front, mindre skjerm, sølvfargede ovale taster, vertikale høyttalerspor og C-knapp til venstre. Den ekstra ringeknappen er fjernet. LCD beholdes på 84×48 og gjengis uten CSS-filter eller bilineær utjevning. Dette er fortsatt en CSS-rekonstruksjon og ikke en eksakt industriell 3D-modell.
+
+
+## v1.4 – Skarpere skjerm og ombygd front
+LCD-logikken er fortsatt 84 × 48 historiske piksler, men rendres via en 672 × 384 piksel canvas (8× nærmeste nabo), for å unngå uklare tegn på Retina-skjermer. Front, sølvpanel, knapper og plassering er revidert. Dette er ikke en verifisert 1:1-modell.
+
+
+## Versjon 1.5 – fotografibasert front
+Telefonens synlige front er nå basert direkte på referansebildet brukeren lastet opp, ikke en fri CSS-illustrasjon. Den interaktive LCD-flaten og usynlige tastetrykksoner er lagt oppå fotografiet. Dette gir langt bedre formmessig likhet, men bildet har feilaktige bokstaver/tall på enkelte knapper og er derfor ikke en historisk korrekt gjengivelse av tastaturmerkingen. Tastaturfunksjonen følger standard 3310-logikk. LCD-en har 84 × 48 logiske piksler, tegnet til 672 × 384 uten interpolering. Skjermens plassering og trykksonene må fortsatt testes på fysisk iPhone.
